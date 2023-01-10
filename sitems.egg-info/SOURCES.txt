@@ -4,6 +4,7 @@ license.txt
 requirements.txt
 setup.py
 sitems/__init__.py
+sitems/customQueriesSalesInvoice.py
 sitems/hooks.py
 sitems/modules.txt
 sitems/patches.txt
@@ -15,6 +16,11 @@ sitems.egg-info/top_level.txt
 sitems/config/__init__.py
 sitems/config/desktop.py
 sitems/config/docs.py
+sitems/public/js/customizedSalesInvoice.js
 sitems/sitems/__init__.py
+sitems/sitems/custom/packed_item.json
+sitems/sitems/custom/sales_invoice.json
+sitems/sitems/custom/sales_invoice_item.json
 sitems/templates/__init__.py
 sitems/templates/pages/__init__.py
+sitems/www/__init__.py

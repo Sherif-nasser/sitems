@@ -2,7 +2,8 @@
 
 frappe.ui.form.on("Sales Invoice", "customized", function(frm) {
     var start = 0;
-    var priceListName = $(".awesomplete")[9].children[0].value;
+    var priceListName = cur_frm.fields_dict.selling_price_list.input.value;
+    
     console.log(priceListName);
 
     function make() {
