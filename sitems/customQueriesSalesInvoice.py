@@ -14,7 +14,8 @@ from erpnext.stock.get_item_details import _get_item_tax_template
 def getItemsForSearch(priceListName):
     # Get defalut warehouse for each item and get the actual_qty from the mentioned
     # warehouse
-    allItems = frappe.get_list("Item")
+    allItems = frappe.get_all("Item",limit_page_length = 20)
+    print(allItems)
     # print(f"here is the warehouse  {itemNames}")
     # [{'name': '005'}, {'name': '004'}, {'name': '003'}, {'name': '002'}]
     itemNames= [name['name'] for name in allItems] ##item names
@@ -37,20 +38,20 @@ def getItemsForSearch(priceListName):
         item_defaultsTable = frappe.get_doc("Item",itemCode).as_dict().item_defaults
         defaultWarehouse = [itemDefault['default_warehouse'].lower() for itemDefault in item_defaultsTable]
         defaultWarehous = defaultWarehouse[0]
-        print(f"this is the default wAREHOUSE {defaultWarehous} for {itemCode} , {item_description}, {item_group}")
-        for name in priceListNames:
-            itemPrices = frappe.get_doc("Item Price",name).as_dict()
+        # print(f"this is the default wAREHOUSE {defaultWarehous} for {itemCode} , {item_description}, {item_group}")
+        # for name in priceListNames:
+        #     itemPrices = frappe.get_doc("Item Price",name).as_dict()
        
-            if itemPrices.price_list == priceListName and itemPrices.item_code == itemCode:
-                itemPrice = itemPrices.price_list_rate 
-                print(f"this is the PRIIIICE LIIIST {itemPrice}")
-        actualQty = frappe.db.get_value("Bin",
-        filters={"item_code": itemCode,"warehouse":defaultWarehous},
-        fieldname=['actual_qty'])
+        #     if itemPrices.price_list == priceListName and itemPrices.item_code == itemCode:
+        #         itemPrice = itemPrices.price_list_rate 
+        #         print(f"this is the PRIIIICE LIIIST {itemPrice}")
+        # actualQty = frappe.db.get_value("Bin",
+        # filters={"item_code": itemCode,"warehouse":defaultWarehous},
+        # fieldname=['actual_qty'])
 
-        if actualQty:
-            print(f"this is the ACTUAL QTY  {actualQty} for {itemCode}")
-        singleRow = [itemCode,item_name,item_group,item_description,actualQty,itemPrice]
+        # if actualQty:
+        #     print(f"this is the ACTUAL QTY  {actualQty} for {itemCode}")
+        singleRow = [itemCode,item_name,item_group,item_description]
         allRows.append(singleRow)
         
     # allRows.append(singleRow)
