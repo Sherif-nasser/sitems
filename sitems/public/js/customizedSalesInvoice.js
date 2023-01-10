@@ -19,14 +19,6 @@ frappe.ui.form.on("Sales Invoice", "customized", function(frm) {
                     fieldtype: "HTML",
                     fieldname: "results",
                 },
-                {
-                    fieldtype: "Button",
-                    fieldname: "more",
-                    label: "More",
-                    click: () => {
-                        console.log("button working")
-                    },
-                },
             ],
             primary_action_label: __("Search"),
             primary_action: function() {
