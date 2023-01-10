@@ -37,13 +37,15 @@ frappe.ui.form.on("Sales Invoice", "customized", function(frm) {
 
         frappe.call({
             method: "sitems.customQueriesSalesInvoice.getItemsForSearch",
-            type: "GET",
+            // type: "GET",
             args: {
                 priceListName
             },
             callback: function(r) {
                 var parent = dialog.fields_dict.results.$wrapper;
+                console.log(parent);
                 var allValues = (r.message).reverse();
+                console.log(allValues);
                 for (var i = 0; i < (allValues).length; i++) {
 					var pricelistRate = allValues[i][5];
 					console.log("this is the pricelistRate "+pricelistRate);
@@ -81,7 +83,7 @@ frappe.ui.form.on("Sales Invoice", "customized", function(frm) {
             var txt = dialog.fields_dict.txt.get_value();
             frappe.call({
                 method: "sitems.customQueriesSalesInvoice.getItemsForSearch",
-                type: "GET",
+                // type: "GET",
                 args: {
                     priceListName
                 },
