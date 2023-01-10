@@ -14,7 +14,7 @@ from erpnext.stock.get_item_details import _get_item_tax_template
 def getItemsForSearch(priceListName):
     # Get defalut warehouse for each item and get the actual_qty from the mentioned
     # warehouse
-    allItems = frappe.get_all("Item")
+    allItems = frappe.get_list("Item")
     # print(f"here is the warehouse  {itemNames}")
     # [{'name': '005'}, {'name': '004'}, {'name': '003'}, {'name': '002'}]
     itemNames= [name['name'] for name in allItems] ##item names
