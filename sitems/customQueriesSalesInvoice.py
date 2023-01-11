@@ -16,8 +16,7 @@ def getItemsForSearch(priceListName):
     # warehouse
     allItems = frappe.get_all("Item")
     print(allItems)
-    # print(f"here is the warehouse  {itemNames}")
-    # [{'name': '005'}, {'name': '004'}, {'name': '003'}, {'name': '002'}]
+  
     itemNames= [name['name'] for name in allItems] ##item names
     print(itemNames)
     allRows = []
@@ -25,8 +24,6 @@ def getItemsForSearch(priceListName):
     priceListObjects = frappe.get_all("Item Price")
     priceListNames = [name['name'] for name in priceListObjects]
 
-    # print(f"this is the PRIIIICE LIIIST {priceListNames}")
-    #[{'name': '3701a8797a'}, {'name': '0a36f4f289'}]
 
 
     for itemCode in itemNames:
