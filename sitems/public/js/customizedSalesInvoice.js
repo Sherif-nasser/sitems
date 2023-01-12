@@ -33,70 +33,72 @@ function make(priceListName,frm) {
             search(priceListName,frm);
         },
     });
-    try {
-        frappe.call({
-            method: "sitems.customQueriesSalesInvoice.getItemsForSearch",
-            // type: "GET",
-            args: {
-                priceListName
-            },
-            callback: function(r) {
-                var parent = dialog.fields_dict.results.$wrapper;
-                // console.log(parent);
-                // console.log("its hereeee");
-                var allValues = (r.message).reverse();
-                console.log(allValues);
-                for (var i = 0; i < (allValues).length; i++) {
-                    var pricelistRate = allValues[i][5];
-                    console.log("this is the pricelistRate " + pricelistRate);
-                    var row = $(
-                        repl(
-                            '<div class="row link-select-row">\
-                    <div class="col-xs-2">\
-                        <b><a href="#">%(name)s</a></b></div>\
-                    <div class="col-xs-10">\
-                        <span class="text-muted">%(values)s</span></div>\
-                    </div>', {
-                                name: allValues[i][0],
-                                values: allValues[i].splice(1).join(", "),
-                            }
-                        )
-                    ).appendTo(parent);
-                    row.find("a")
-                        .attr("data-value", allValues[i][0])
-                        .attr("data-name", pricelistRate)
-                        .click(function() {
-                            var value = $(this).attr("data-value");
-                            var price = $(this).attr("data-name");
-                            set_in_grid(value, price,frm);
-                            // console.log("item clicked ya sherif");
-                        });
-                }
+    // try {
+    //     frappe.call({
+    //         method: "sitems.customQueriesSalesInvoice.getItemsForSearch",
+    //         // type: "GET",
+    //         args: {
+    //             priceListName
+    //         },
+    //         callback: function(r) {
+    //             var parent = dialog.fields_dict.results.$wrapper;
+    //             // console.log(parent);
+    //             // console.log("its hereeee");
+    //             var allValues = (r.message).reverse();
+    //             console.log(allValues);
+    //             for (var i = 0; i < (allValues).length; i++) {
+    //                 var pricelistRate = allValues[i][5];
+    //                 console.log("this is the pricelistRate " + pricelistRate);
+    //                 var row = $(
+    //                     repl(
+    //                         '<div class="row link-select-row">\
+    //                 <div class="col-xs-2">\
+    //                     <b><a href="#">%(name)s</a></b></div>\
+    //                 <div class="col-xs-10">\
+    //                     <span class="text-muted">%(values)s</span></div>\
+    //                 </div>', {
+    //                             name: allValues[i][0],
+    //                             values: allValues[i].splice(1).join(", "),
+    //                         }
+    //                     )
+    //                 ).appendTo(parent);
+    //                 row.find("a")
+    //                     .attr("data-value", allValues[i][0])
+    //                     .attr("data-name", pricelistRate)
+    //                     .click(function() {
+    //                         var value = $(this).attr("data-value");
+    //                         var price = $(this).attr("data-name");
+    //                         set_in_grid(value, price,frm);
+    //                         // console.log("item clicked ya sherif");
+    //                     });
+    //             }
 
-            },
+    //         },
 
-        });
-    } catch (e) {
-        alert(e);
-        console.log(e);
-    }
+    //     });
+    // } catch (e) {
+    //     alert(e);
+    //     console.log(e);
+    // }
     dialog.show();
 }
 
 function search(priceListName,frm) {
     var txt = cur_dialog.fields_dict.txt.get_value();
     try {
+        if(txt){
         frappe.call({
             method: "sitems.customQueriesSalesInvoice.getItemsForSearch",
             // type: "GET",
             args: {
-                priceListName
+                priceListName,
+                txt
             },
             callback: function(r) {
                 var parent = cur_dialog.fields_dict.results.$wrapper.children("div").remove();
                 var updatedParent = cur_dialog.fields_dict.results.$wrapper;
                 var allValues = (r.message).reverse();
-                if (txt) {
+                
                     for (var i = 0; i < (allValues).length; i++) {
                         if (allValues[i][0].includes(txt) || allValues[i][1].includes(txt)) {
                             var name = allValues[i][0];
@@ -127,10 +129,11 @@ function search(priceListName,frm) {
                                 });
                         }
                     }
-                }
+                
             },
 
         });
+        }
     } catch (e) {
         console.log(e)
         alert(e);
