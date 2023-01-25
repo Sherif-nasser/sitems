@@ -101,21 +101,78 @@ function search(priceListName,frm) {
                 
                     for (var i = 0; i < (allValues).length; i++) {
                         if (allValues[i][0].includes(txt) || allValues[i][1].includes(txt)) {
-                            var name = allValues[i][0];
-                            var values = allValues[i];
-                            var pricelistRate = allValues[i][5];
+                            var code = allValues[i][0];
+                            // var values = allValues[i];
+                            var item_name = allValues[i][1];
+                            var item_group = allValues[i][2];
+                            var item_description = allValues[i][3];
+                            var Quantity = allValues[i][4];
+                            var partialQty = allValues[i][5];
+                            var price = allValues[i][6]; 
+                            
+                            var pricelistRate = allValues[i][6];
                             var row = $(
+
                                 repl(
-                                    '<div class="row link-select-row">\
-                        <div class="col-xs-2">\
-                            <b><a href="#">%(name)s</a></b></div>\
-                        <div class="col-xs-10">\
-                            <span class="text-muted">%(values)s</span></div>\
-                        </div>', {
-                                        name: name,
-                                        values: values.splice(1).join(", "),
+                                    `
+                                    <div class="container" style="padding-right:0px !important;padding-left:0px !important;">
+                                        <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                            <th scope="col">Item code</th>
+                                            <th scope="col">Item name</th>
+                                 
+                                            <th scope="col">Quantity</th>
+                                            <th scope="col">Partial Quantity</th>
+                                            <th scope="col">Stock price</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                            <th scope="row">
+                                                <b><a href="#">%(code)s</a></b>
+                                            </th>
+                                            <td>
+                                                <span class="text-muted">%(item_name)s</span>
+                                            </td>
+                                          
+                                            <td>
+                                                <span class="text-muted">%(Quantity)s</span>
+                                            </td>
+                                            <td>
+                                                <span class="text-muted">%(partialQty)s</span>
+                                            </td>
+                                            <td>
+                                                <span class="text-muted">%(price)s</span>
+                                            </td>
+                                            
+                                            </tr>
+                                        </tbody>
+                                        </table>
+                                    </div>
+                                            `                            
+                                    , {
+                                        code: code,
+                                        item_name:item_name,
+                                        item_group:item_group,
+                                        item_description:item_description,
+                                        Quantity:Quantity,
+                                        partialQty:partialQty,
+                                        price:price
+
                                     }
                                 )
+                        //         repl(
+                        //             '<div class="row link-select-row">\
+                        // <div class="col-xs-2">\
+                        //     <b><a href="#">%(name)s</a></b></div>\
+                        // <div class="col-xs-10">\
+                        //     <span class="text-muted">%(values)s</span></div>\
+                        // </div>', {
+                        //                 name: name,
+                        //                 values: values.splice(1).join(", "),
+                        //             }
+                        //         )
                             ).appendTo(updatedParent);
 
 
