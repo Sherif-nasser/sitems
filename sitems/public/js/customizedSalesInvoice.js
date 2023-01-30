@@ -1,8 +1,7 @@
 ///// Method ///////////
 frappe.ui.form.on("Sales Invoice", "customized", function(frm) {
     var priceListName = cur_frm.fields_dict.selling_price_list.input.value;
-    console.log(priceListName);
-    return make(priceListName,frm)
+    return make(priceListName,frm);
 });
 
 
@@ -14,25 +13,28 @@ function make(priceListName,frm) {
                 fieldname: "txt",
                 label: "Beginning with",
                 description: "You can use wildcard %",
+                change() {
+                    var text = dialog.fields_dict.txt.get_value();
+                    // var txtClass = dialog.fields_dict.txt.$wrapper[0].className;
+                    search(priceListName,frm,text);
+                    console.log(text);
+                }
             },
             {
                 fieldtype: "HTML",
                 fieldname: "results",
             }
-            // {
-            //     fieldtype: "Button",
-            //     fieldname: "more",
-            //     label: "More",
-            //     click: () => {
-            //         console.log("button working")
-            //     },
-            // },
         ],
         primary_action_label: __("Search"),
         primary_action: function() {
             search(priceListName,frm);
+            // frappe.prompt('txt', ({ value }) => console.log(value))
         },
+       
     });
+    dialog.show();
+    
+
     // try {
     //     frappe.call({
     //         method: "sitems.customQueriesSalesInvoice.getItemsForSearch",
@@ -80,11 +82,22 @@ function make(priceListName,frm) {
     //     alert(e);
     //     console.log(e);
     // }
-    dialog.show();
+    // autoInvoke(frm,priceListName);
+    
 }
 
-function search(priceListName,frm) {
-    var txt = cur_dialog.fields_dict.txt.get_value();
+
+
+function search(priceListName,frm,text=null) {
+    // console.log(cur_dialog.fields_dict.txt);
+    var txt = "";
+
+    if(text){
+         txt = text;
+    }else{
+         txt = cur_dialog.fields_dict.txt.get_value();
+    }
+    
     try {
         if(txt){
         frappe.call({
@@ -97,6 +110,28 @@ function search(priceListName,frm) {
             callback: function(r) {
                 var parent = cur_dialog.fields_dict.results.$wrapper.children("div").remove();
                 var updatedParent = cur_dialog.fields_dict.results.$wrapper;
+                var tableHeads = $(
+                    repl(
+                        `
+                        <div class="container" style="padding-right:0px !important;padding-left:0px !important;">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                    <th scope="col">Item code</th>
+                                    <th scope="col">Item name</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Partial Quantity</th>
+                                    <th scope="col">Stock price</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        `
+                    )
+                ).appendTo(updatedParent)
+              
+                
+                
                 var allValues = (r.message).reverse();
                 
                     for (var i = 0; i < (allValues).length; i++) {
@@ -115,18 +150,7 @@ function search(priceListName,frm) {
 
                                 repl(
                                     `
-                                    <div class="container" style="padding-right:0px !important;padding-left:0px !important;">
-                                        <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                            <th scope="col">Item code</th>
-                                            <th scope="col">Item name</th>
-                                 
-                                            <th scope="col">Quantity</th>
-                                            <th scope="col">Partial Quantity</th>
-                                            <th scope="col">Stock price</th>
-                                            </tr>
-                                        </thead>
+                                    
                                         <tbody>
                                             <tr>
                                             <th scope="row">
@@ -148,8 +172,7 @@ function search(priceListName,frm) {
                                             
                                             </tr>
                                         </tbody>
-                                        </table>
-                                    </div>
+                                 
                                             `                            
                                     , {
                                         code: code,
@@ -162,18 +185,9 @@ function search(priceListName,frm) {
 
                                     }
                                 )
-                        //         repl(
-                        //             '<div class="row link-select-row">\
-                        // <div class="col-xs-2">\
-                        //     <b><a href="#">%(name)s</a></b></div>\
-                        // <div class="col-xs-10">\
-                        //     <span class="text-muted">%(values)s</span></div>\
-                        // </div>', {
-                        //                 name: name,
-                        //                 values: values.splice(1).join(", "),
-                        //             }
-                        //         )
-                            ).appendTo(updatedParent);
+                   
+                            ).appendTo(updatedParent.children()[0].children[0])
+                           
 
 
                             row.find("a")
