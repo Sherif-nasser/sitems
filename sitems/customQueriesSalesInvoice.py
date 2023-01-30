@@ -49,7 +49,7 @@ def getItemsForSearch(priceListName,txt):
         item_defaultsTable = item.item_defaults
         
         
-        defaultWarehouse = [itemDefault['default_warehouse'].lower() for itemDefault in item_defaultsTable]
+        defaultWarehouse = [itemDefault['default_warehouse'] for itemDefault in item_defaultsTable]
         defaultWarehous = defaultWarehouse[0]
 
         itemPrices = frappe.get_all(
